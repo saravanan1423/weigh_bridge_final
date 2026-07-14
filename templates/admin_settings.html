@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Settings | Weighman WMS{% endblock %}
+
+{% block styles %}
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/admin_settings.css', v='20260714-1') }}">
+{% endblock %}
+
+{% block content %}
+        <section class="entry-card admin-settings-card">
+          <div class="admin-settings-panel">
+            <div class="admin-settings-head">
+              <div>
+                <h1>Admin Settings</h1>
+                <p>Control system-wide behavior. More options can be added here later.</p>
+              </div>
+            </div>
+
+            <nav class="admin-settings-tabs" aria-label="Admin setting groups">
+              <button type="button" class="active" data-admin-section="current">Main Screen Fields</button>
+              <button type="button" data-admin-section="master">Master Fields</button>
+              <button type="button" data-admin-link="{{ url_for('settings.custom_field') }}">Custom Fields</button>
+            </nav>
+
+            <form class="admin-settings-form" id="adminSettingsForm" data-admin-panel="current">
+              <label class="admin-toggle">
+                <input id="resetSerialDaily" type="checkbox">
+                <span>
+                  <strong>Reset S.No every day</strong>
+                  <small>If enabled, S.No starts again from 1 for each date. If disabled, S.No continues across all dates.</small>
+                </span>
+              </label>
+
+              <label class="admin-toggle">
+                <input id="resendButtonEnabled" type="checkbox">
+                <span>
+                  <strong>Show Resend button</strong>
+                  <small>If enabled, Resend is available on the weighment screen. If disabled, the button is hidden.</small>
+                </span>
+              </label>
+
+              <label class="admin-toggle">
+                <input id="liveWeightEnabled" type="checkbox">
+                <span>
+                  <strong>Capture live weight from machine</strong>
+                  <small>If enabled, the weighment screen uses the live scale reading. If disabled, it shows Manual Weight and allows the operator to type the weight.</small>
+                </span>
+              </label>
+
+              <div class="admin-update-card">
+                <div>
+                  <strong>Network Auto Update</strong>
+                  <small>Current version: <span id="appVersion">--</span>. Paste the GitHub/network version.json URL here.</small>
+                </div>
+                <label class="admin-text-field" for="updateManifestUrl">
+                  Update manifest URL
+                  <input id="updateManifestUrl" type="url" placeholder="https://.../version.json" autocomplete="off">
+                </label>
+                <div class="admin-update-actions">
+                  <button type="button" id="checkUpdateButton">Check Update</button>
+                  <button type="button" id="applyUpdateButton" class="primary" disabled>Download & Restart</button>
+                </div>
+                <p id="updateStatus" class="admin-update-status">No update check yet.</p>
+              </div>
+
+              <div class="admin-settings-actions">
+                <button type="submit" class="primary">Save Settings</button>
+              </div>
+            </form>
+
+            <section class="master-field-settings" data-admin-panel="master" hidden>
+              <div>
+                <h2>Master Field Settings</h2>
+                <p>Choose a Master screen to rename fields or control Enabled and Required states.</p>
+              </div>
+              <div class="master-field-settings__links">
+                <a href="{{ url_for('settings.custom_field', scope='master', section='vehicle_number') }}">Vehicle Number</a>
+                <a href="{{ url_for('settings.custom_field', scope='master', section='vehicle_type') }}">Vehicle Type</a>
+                <a href="{{ url_for('settings.custom_field', scope='master', section='material') }}">Material</a>
+                <a href="{{ url_for('settings.custom_field', scope='master', section='customer') }}">Customer</a>
+              </div>
+            </section>
+          </div>
+        </section>
+{% endblock %}
+
+{% block scripts %}
+  <script src="{{ url_for('static', filename='js/admin_settings.js', v='20260714-1') }}"></script>
+{% endblock %}
